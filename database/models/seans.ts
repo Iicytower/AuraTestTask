@@ -1,25 +1,25 @@
 import sequelize from 'sequelize';
 
-const { STRING, UUID, UUIDV4 } = sequelize.DataTypes;
+const { STRING, UUID, UUIDV4, INTEGER, DATE } = sequelize.DataTypes;
 
 export default function (sequelize: any) {
-    sequelize.define('User', {
-        userID: {
+    sequelize.define('Seans', {
+        seansID: {
             type: UUID,
             defaultValue: UUIDV4,
             primaryKey: true,
             allownull: false,
         },
-        email: {
+        filmTime: {
             type: STRING,
             allownull: false,
         },
-        password: {
-            type: STRING,
+        duration: {
+            type: INTEGER,
             allownull: false,
         },
-        salt: {
-            type: STRING,
+        startTime: {
+            type: DATE,
             allownull: false,
         },
     })

@@ -3,22 +3,18 @@ import sequelize from 'sequelize';
 const { STRING, UUID, UUIDV4 } = sequelize.DataTypes;
 
 export default function (sequelize: any) {
-    sequelize.define('User', {
-        userID: {
+    sequelize.define('CinemaHall', {
+        hallID: {
             type: UUID,
             defaultValue: UUIDV4,
             primaryKey: true,
             allownull: false,
         },
-        email: {
+        capacity: {
             type: STRING,
             allownull: false,
         },
-        password: {
-            type: STRING,
-            allownull: false,
-        },
-        salt: {
+        name: {
             type: STRING,
             allownull: false,
         },
