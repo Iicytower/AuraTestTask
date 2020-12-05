@@ -12,7 +12,7 @@ const addCinemaHall = async (req: Request, res: Response) => {
             where: {
                 name: hall.name,
             }
-        })
+        });
         if(!!isExist){
             return res.status(200).json({
                 status: `failure`,
