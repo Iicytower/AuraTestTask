@@ -2,8 +2,8 @@ import { Router } from "express";
 
 const router = Router();
 
-import testPage from '../../controllers/authrequired/test';
+import addCinemHallRouter from './addCinemaHall';
 
-router.use("/test", testPage);
+router.use("/addCinemaHall", addCinemHallRouter);
 
 export default router;

@@ -3,7 +3,7 @@ import sequelize from 'sequelize';
 const { STRING, UUID, UUIDV4 } = sequelize.DataTypes;
 
 export default function (sequelize: any) {
-    sequelize.define('CinemaHall', {
+    sequelize.define('CinemaHalls', {
         hallID: {
             type: UUID,
             defaultValue: UUIDV4,

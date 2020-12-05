@@ -31,7 +31,6 @@ const register = async (req: Request, res: Response) => {
 
   try {
 
-    const characterSW: number = Math.floor(Math.random() * 83) + 1;
     const salt: string = bcrypt.genSaltSync(10);
 
     const user = {
@@ -46,8 +45,8 @@ const register = async (req: Request, res: Response) => {
     return res.status(200).json({
       status: `succes`,
       msg: `success register user with email ${email}.`,
-
     });
+    
   } catch (err) {
     console.error(err);
     return res.status(500).json({
