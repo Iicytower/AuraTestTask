@@ -4,6 +4,6 @@ const router = Router();
 
 import addCinemaHall from '../../controllers/authrequired/addCinemaHall';
 
-router.get("/", addCinemaHall);
+router.post("/", addCinemaHall);
 
 export default router;

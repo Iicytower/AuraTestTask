@@ -24,7 +24,7 @@ const addCinemaHall = async (req: Request, res: Response) => {
 
         return res.status(200).json({
             status: `succes`,
-            msg: `success add newhall with name ${hall.name}.`,
+            msg: `success add new hall with name ${hall.name}.`,
           });
 
     } catch (err) {

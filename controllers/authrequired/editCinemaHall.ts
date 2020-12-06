@@ -24,7 +24,7 @@ const editCinemaHall = async (req: Request, res: Response) => {
         if (!isExist) {
             return res.status(200).json({
                 status: "failure",
-                msg: `hall with id ${hall.id} does not exist.`
+                msg: `Hall with id ${hall.id} does not exist.`
             });
         }
         if (hall.name !== undefined && hall.capacity !== undefined) {
@@ -42,7 +42,7 @@ const editCinemaHall = async (req: Request, res: Response) => {
             );
             return res.status(204).json({
                 status: "success",
-                msg: "Successfully update cinema hall",
+                msg: "Successfully update cinema hall name and capacity",
             });
         }
         if (hall.name !== undefined) {
@@ -59,7 +59,7 @@ const editCinemaHall = async (req: Request, res: Response) => {
             );
             return res.status(204).json({
                 status: "success",
-                msg: "Successfully update cinema hall",
+                msg: "Successfully update cinema hall name",
             });
         }
         if (hall.capacity !== undefined) {
@@ -76,7 +76,7 @@ const editCinemaHall = async (req: Request, res: Response) => {
             );
             return res.status(204).json({
                 status: "success",
-                msg: "Successfully update cinema hall",
+                msg: "Successfully update cinema hall capacity",
             });
         }
 

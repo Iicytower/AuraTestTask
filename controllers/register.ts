@@ -14,7 +14,7 @@ const register = async (req: Request, res: Response) => {
       },
       attributes: ["email"],
     });
-    if (!isExist) {
+    if (!!isExist) {
       return res.status(200).json({
         status: "failure",
         msg: `User with email ${email} exist. Use diffrent adress.`
@@ -38,7 +38,6 @@ const register = async (req: Request, res: Response) => {
       password: bcrypt.hashSync(password, salt),
       salt,
     };
-
 
     const addUser = await User.create(user);
 

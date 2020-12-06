@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import userModel from "./models/users";
 import cinemaHallsModel from "./models/cinemHalls";
-import seansModel from "./models/seans";
+import cinemaScreeningModel from "./models/cinemaScreening";
 
 const DATABASE_NAME = (!!process.env.DATABASE_NAME) ? String(process.env.DATABASE_NAME) : 'db';
 const DATABASE_USERNAME = (!!process.env.DATABASE_USERNAME) ? String(process.env.DATABASE_USERNAME) : 'root';
@@ -23,10 +23,10 @@ const { models } = connection;
 
 userModel(connection);
 cinemaHallsModel(connection);
-seansModel(connection);
+cinemaScreeningModel(connection);
 
-models.CinemaHalls.hasMany(models.Seans);
-models.Seans.belongsTo(models.CinemaHalls);
+models.CinemaHalls.hasMany(models.CinemaScreening);
+models.CinemaScreening.belongsTo(models.CinemaHalls);
 
 const initDbConnection = async () => {
     try {

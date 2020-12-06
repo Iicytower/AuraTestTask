@@ -3,14 +3,14 @@ import sequelize from 'sequelize';
 const { STRING, UUID, UUIDV4, INTEGER, DATE } = sequelize.DataTypes;
 
 export default function (sequelize: any) {
-    sequelize.define('Seans', {
-        seansID: {
+    sequelize.define('CinemaScreening', {
+        cinemaScreeningID: {
             type: UUID,
             defaultValue: UUIDV4,
             primaryKey: true,
             allownull: false,
         },
-        filmTime: {
+        filmTitle: {
             type: STRING,
             allownull: false,
         },
