@@ -80,8 +80,6 @@ const editCinemaHall = async (req: Request, res: Response) => {
             });
         }
 
-        return res.json('dupa')
-
     } catch (err) {
         console.error(err);
         return res.status(500).json({
