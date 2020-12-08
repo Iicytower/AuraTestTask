@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import database from "../../database/database";
 const { CinemaScreening } = database.models;
 
+import { Screening } from '../../helpers/types';
+
+
 const editCinemaScreening = async (req: Request, res: Response) => {
 
     try {
@@ -12,7 +15,7 @@ const editCinemaScreening = async (req: Request, res: Response) => {
         const isExistFilmTitle: boolean = !(filmTitle === undefined);
 
         if (!isExistStartTime && !isExistDuration && !isExistFilmTitle) {
-            return res.status(200).json({
+            return res.status(400).json({
                 status: "failure",
                 msg: "Give minumum one value to change in database."
             });
@@ -24,19 +27,13 @@ const editCinemaScreening = async (req: Request, res: Response) => {
         });
 
         if (!isExist) {
-            return res.status(200).json({
+            return res.status(404).json({
                 status: "failure",
                 msg: `Screening with id ${id} does not exist.`
             });
         }
 
-        type UpdateScreening = {
-            startTime?: string,
-            duration?: number,
-            filmTitle?: string,
-        };
-
-        const newScreeningData: UpdateScreening = {};
+        const newScreeningData: Screening = {};
 
         if (isExistStartTime) newScreeningData.startTime = startTime;
         if (isExistDuration) newScreeningData.duration = duration;
@@ -48,10 +45,8 @@ const editCinemaScreening = async (req: Request, res: Response) => {
             },
         });
 
-        return res.status(200).json({
-            status: `success`,
-            msg: "Successfully update cinema screening",
-        });
+        return res.status(204);
+
     } catch (err) {
         console.error(err);
         return res.status(500).json({

@@ -41,11 +41,11 @@ const register = async (req: Request, res: Response) => {
 
     const addUser = await User.create(user);
 
-    return res.status(200).json({
+    return res.status(201).json({
       status: `succes`,
       msg: `success register user with email ${email}.`,
     });
-    
+
   } catch (err) {
     console.error(err);
     return res.status(500).json({

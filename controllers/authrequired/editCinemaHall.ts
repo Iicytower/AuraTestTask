@@ -1,15 +1,21 @@
 import { Request, Response } from 'express';
+import { Op } from 'sequelize';
 import database from "../../database/database";
 const { CinemaHalls } = database.models;
+
+
+import { Hall } from '../../helpers/types';
 
 const editCinemaHall = async (req: Request, res: Response) => {
 
     try {
+        const { id, name, capacity } = req.body;
 
-        const hall = req.body
+        const isExistName = !(name === undefined)
+        const isExistCapacity = !(capacity === undefined)
 
-        if (hall.name === undefined && hall.capacity === undefined) {
-            return res.status(200).json({
+        if (!isExistName && !isExistCapacity) {
+            return res.status(400).json({
                 status: "failure",
                 msg: "Give minumum one value to change in database."
             });
@@ -17,68 +23,41 @@ const editCinemaHall = async (req: Request, res: Response) => {
 
         const isExist = await CinemaHalls.findOne({
             where: {
-                hallID: hall.id,
+                hallID: id,
             }
         });
 
         if (!isExist) {
-            return res.status(200).json({
+            return res.status(404).json({
                 status: "failure",
-                msg: `Hall with id ${hall.id} does not exist.`
+                msg: `Hall with id ${id} does not exist.`
             });
         }
-        if (hall.name !== undefined && hall.capacity !== undefined) {
-            const { name, capacity } = hall;
-            await CinemaHalls.update(
-                {
-                    name,
-                    capacity,
-                },
-                {
-                    where: {
-                        hallID: hall.id,
-                    },
-                },
-            );
-            return res.status(204).json({
-                status: "success",
-                msg: "Successfully update cinema hall name and capacity",
-            });
+
+        const isExistNameInDb = await CinemaHalls.findOne({
+            where: {
+                name,
+            }
+        });
+        if(!!isExistNameInDb){
+            return res.status(400).json({
+                status: `failure`,
+                mgs: `There is a a hall with name ${name}`
+            })
         }
-        if (hall.name !== undefined) {
-            const { name } = hall;
-            await CinemaHalls.update(
-                {
-                    name,
-                },
-                {
-                    where: {
-                        hallID: hall.id,
-                    },
-                },
-            );
-            return res.status(204).json({
-                status: "success",
-                msg: "Successfully update cinema hall name",
-            });
-        }
-        if (hall.capacity !== undefined) {
-            const { capacity } = hall;
-            await CinemaHalls.update(
-                {
-                    capacity,
-                },
-                {
-                    where: {
-                        hallID: hall.id,
-                    },
-                },
-            );
-            return res.status(204).json({
-                status: "success",
-                msg: "Successfully update cinema hall capacity",
-            });
-        }
+
+        const newHallData: Hall = {};
+
+        if (isExistName) newHallData.name = name;
+        if (isExistCapacity) newHallData.capacity = capacity;
+
+        await CinemaHalls.update(newHallData, {
+            where: {
+                hallID: id,
+            },
+        });
+
+        return res.status(204);
 
     } catch (err) {
         console.error(err);

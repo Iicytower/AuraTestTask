@@ -6,25 +6,25 @@ const addCinemaHall = async (req: Request, res: Response) => {
 
 
     try {
-        const hall = req.body
+        const {capacity, name} = req.body
 
         const isExist = await CinemaHalls.findOne({
             where: {
-                name: hall.name,
+                name: name,
             }
         });
         if(!!isExist){
             return res.status(200).json({
                 status: `failure`,
-                mgs: `There is a a hall with name ${hall.name}`
+                mgs: `There is a a hall with name ${name}`
             })
         }
 
-        await CinemaHalls.create(hall)
+        await CinemaHalls.create({capacity, name})
 
-        return res.status(200).json({
+        return res.status(201).json({
             status: `succes`,
-            msg: `success add new hall with name ${hall.name}.`,
+            msg: `success to add new hall with name ${name}.`,
           });
 
     } catch (err) {

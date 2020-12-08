@@ -11,7 +11,7 @@ router.post("/",
     bodyParser.json(),
     [
         check("email").isEmail(),
-        check("password").isString()
+        check("password").isString(),
     ],
     validator(),
     loginController);

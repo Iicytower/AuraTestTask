@@ -3,7 +3,7 @@ import database from "../../database/database";
 const { CinemaScreening, CinemaHalls } = database.models;
 
 import allScreeningInHall from '../../helpers/allScreeningInHall'
-
+import { Screening } from '../../helpers/types';
 import isOccupied from '../../helpers/isThereAPlace';
 
 const addCinemaScreening = async (req: Request, res: Response) => {
@@ -11,7 +11,18 @@ const addCinemaScreening = async (req: Request, res: Response) => {
     try {
         const { hallID, startTime, duration, filmTitle } = req.body;
 
-        //I know I should only download future screenings
+        const today: number = Date.parse(String(new Date()));
+        const newStart: number = Date.parse(startTime);
+
+        if(today>newStart){
+            return res.status(400).json({
+                status: "failure",
+                msg: "You can't add screening in past",
+            })
+        }
+
+        //I know I should only download future screenings 
+        // TODO save date in db in miliseconds and then i can use sequelize.Op for filter records in query like a numbers
         const foundCinemaHall = await CinemaHalls.findOne({
             where: {
                 hallID,
@@ -22,18 +33,12 @@ const addCinemaScreening = async (req: Request, res: Response) => {
         if (!!foundCinemaHall) {
             const screeningList = await allScreeningInHall(hallID);
 
-            type screeningData = {
-                filmTitle: string,
-                startTime: string,
-                duration: number,
-            };
-
-            const data: screeningData[] = [];
+            const data: Screening[] = [];
 
             for (let i = 0; i < screeningList.length; i++) {
                 const el = screeningList[i];
 
-                const screeningData: screeningData = {
+                const screeningData: Screening = {
                     filmTitle: el.getDataValue('filmTitle'),
                     startTime: el.getDataValue('startTime'),
                     duration: el.getDataValue('duration'),
@@ -44,10 +49,16 @@ const addCinemaScreening = async (req: Request, res: Response) => {
             for (let i = 0; i < data.length; i++) {
                 const el = data[i];
 
+                if ((el.startTime === undefined) || (el.duration === undefined)) {
+                    return res.status(500).json({
+                        status: `failure`,
+                        msg: "Somthing goes wrong with data types",
+                    })
+                }
+
                 const curStart: number = Date.parse(el.startTime)
                 const curEnd: number = curStart + (el.duration * 60 * 1000);
-                const newStart: number = Date.parse(startTime);
-                const newEnd: number = Date.parse(startTime) + (duration * 60 * 1000);
+                const newEnd: number = newStart + (duration * 60 * 1000);
 
                 const curPlace: boolean = await isOccupied(curStart, curEnd, newStart, newEnd);
                 if (!curPlace) isThereAPlace = false
@@ -56,7 +67,7 @@ const addCinemaScreening = async (req: Request, res: Response) => {
             if (!isThereAPlace) {
                 return res.status(200).json({
                     status: `failure`,
-                    msg: "The room is occupied during the given hours"
+                    msg: "The room is occupied during the given hours",
                 });
             }
 
@@ -67,10 +78,10 @@ const addCinemaScreening = async (req: Request, res: Response) => {
                 startTime,
                 duration,
                 filmTitle,
-                CinemaHallHallID: hallID,
+                CinemaHallHallID: hallID, //TODO normal assossiations manually adding is bad practice
             });
 
-            return res.status(200).json({
+            return res.status(201).json({
                 status: `success`,
                 msg: `We add ${filmTitle} to database.`,
             })

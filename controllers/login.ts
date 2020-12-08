@@ -9,7 +9,7 @@ const LocalStrategy = passportLocal.Strategy;
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
     if (!!req.user) {
-        return res.status(200).json({
+        return res.status(400).json({
             status: 'failure',
             mgs: "You are already logged in."
         })
@@ -32,7 +32,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
                 });
 
                 if (!foundUser) {
-                    return res.status(200).json({
+                    return res.status(401).json({
                         status: `failure`,
                         msg: `failed login user with email ${email} does not exist`,
                     });
@@ -44,7 +44,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
                 if (bcrypt.compareSync(password, loggedUser.password)) {
                     return done(null, loggedUser)
                 } else {
-                    return res.status(200).json({
+                    return res.status(401).json({
                         status: `failure`,
                         msg: `wrong email or password`,
                     });
