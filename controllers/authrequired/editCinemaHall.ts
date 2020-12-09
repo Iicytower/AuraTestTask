@@ -57,7 +57,7 @@ const editCinemaHall = async (req: Request, res: Response) => {
             },
         });
 
-        return res.status(204);
+        return res.status(204).end();
 
     } catch (err) {
         console.error(err);

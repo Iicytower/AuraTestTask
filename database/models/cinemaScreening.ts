@@ -1,6 +1,6 @@
 import sequelize from 'sequelize';
 
-const { STRING, UUID, UUIDV4, INTEGER, DATE } = sequelize.DataTypes;
+const { STRING, UUID, UUIDV4, INTEGER, BIGINT } = sequelize.DataTypes;
 
 export default function (sequelize: any) {
     sequelize.define('CinemaScreening', {
@@ -19,7 +19,7 @@ export default function (sequelize: any) {
             allownull: false,
         },
         startTime: {
-            type: DATE,
+            type: BIGINT,
             allownull: false,
         },
     })

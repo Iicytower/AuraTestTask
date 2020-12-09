@@ -10,7 +10,7 @@ router.use("/register", registerRouter);
 router.use("/login", loginRouter);
 
 router.use("/authrequired", 
-(req, res, next) => (req.isAuthenticated()) ? next() : res.send('failed to auth'),
+// (req, res, next) => (req.isAuthenticated()) ? next() : res.send('failed to auth'),
 authrequired);
 
 export default router;

@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
+import { start } from 'repl';
 import database from "../../database/database";
 const { CinemaScreening } = database.models;
 
-import { Screening } from '../../helpers/types';
+import { ScreeningDb } from '../../helpers/types';
 
 
 const editCinemaScreening = async (req: Request, res: Response) => {
@@ -20,12 +21,14 @@ const editCinemaScreening = async (req: Request, res: Response) => {
                 msg: "Give minumum one value to change in database."
             });
         }
+
+
+
         const isExist = await CinemaScreening.findOne({
             where: {
                 cinemaScreeningID: id,
             }
         });
-
         if (!isExist) {
             return res.status(404).json({
                 status: "failure",
@@ -33,9 +36,20 @@ const editCinemaScreening = async (req: Request, res: Response) => {
             });
         }
 
-        const newScreeningData: Screening = {};
+        const newScreeningData: ScreeningDb = {};
 
-        if (isExistStartTime) newScreeningData.startTime = startTime;
+        if (isExistStartTime) {
+            const today: number = Date.parse(String(new Date()));
+            const newStart: number = Date.parse(String(startTime));
+
+            if (today > newStart) {
+                return res.status(400).json({
+                    status: "failure",
+                    msg: "You can't edit the screening that already took place.",
+                });
+            }
+            newScreeningData.startTime = newStart;
+        }
         if (isExistDuration) newScreeningData.duration = duration;
         if (isExistFilmTitle) newScreeningData.filmTitle = filmTitle;
 
@@ -44,8 +58,7 @@ const editCinemaScreening = async (req: Request, res: Response) => {
                 cinemaScreeningID: id,
             },
         });
-
-        return res.status(204);
+        return res.status(204).end();
 
     } catch (err) {
         console.error(err);

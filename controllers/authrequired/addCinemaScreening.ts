@@ -14,15 +14,13 @@ const addCinemaScreening = async (req: Request, res: Response) => {
         const today: number = Date.parse(String(new Date()));
         const newStart: number = Date.parse(startTime);
 
-        if(today>newStart){
+        if (today > newStart) {
             return res.status(400).json({
                 status: "failure",
                 msg: "You can't add screening in past",
             })
         }
 
-        //I know I should only download future screenings 
-        // TODO save date in db in miliseconds and then i can use sequelize.Op for filter records in query like a numbers
         const foundCinemaHall = await CinemaHalls.findOne({
             where: {
                 hallID,
@@ -32,7 +30,6 @@ const addCinemaScreening = async (req: Request, res: Response) => {
         let isThereAPlace: boolean = true;
         if (!!foundCinemaHall) {
             const screeningList = await allScreeningInHall(hallID);
-
             const data: Screening[] = [];
 
             for (let i = 0; i < screeningList.length; i++) {
@@ -52,11 +49,11 @@ const addCinemaScreening = async (req: Request, res: Response) => {
                 if ((el.startTime === undefined) || (el.duration === undefined)) {
                     return res.status(500).json({
                         status: `failure`,
-                        msg: "Somthing goes wrong with data types",
-                    })
+                        msg: "Somthing goes wrong with data from database",
+                    });
                 }
 
-                const curStart: number = Date.parse(el.startTime)
+                const curStart: number = parseInt(el.startTime);
                 const curEnd: number = curStart + (el.duration * 60 * 1000);
                 const newEnd: number = newStart + (duration * 60 * 1000);
 
@@ -75,10 +72,10 @@ const addCinemaScreening = async (req: Request, res: Response) => {
 
         if (isThereAPlace) {
             const addCinemaScreening = await CinemaScreening.create({
-                startTime,
+                startTime: newStart,
                 duration,
                 filmTitle,
-                CinemaHallHallID: hallID, //TODO normal assossiations manually adding is bad practice
+                CinemaHallHallID: hallID, //TODO normal assossiations, manually adding is bad practice
             });
 
             return res.status(201).json({
