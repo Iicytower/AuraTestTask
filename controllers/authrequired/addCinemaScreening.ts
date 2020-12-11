@@ -57,8 +57,7 @@ const addCinemaScreening = async (req: Request, res: Response) => {
                 const curEnd: number = curStart + (el.duration * 60 * 1000);
                 const newEnd: number = newStart + (duration * 60 * 1000);
 
-                const curPlace: boolean = await isOccupied(curStart, curEnd, newStart, newEnd);
-                if (!curPlace) isThereAPlace = false
+                if (!await isOccupied(curStart, curEnd, newStart, newEnd)) isThereAPlace = false
             }
 
             if (!isThereAPlace) {

@@ -2,9 +2,10 @@ import database from "../database/database";
 const { CinemaScreening } = database.models;
 import { Op } from 'sequelize';
 
-export default async(hallID: string) =>{
+export default async(hallID: string, today: number = Date.parse(String(new Date()))) =>{
     try {
-        const today: number = Date.parse(String(new Date()));
+        // const today: number = Date.parse(String(new Date()));
+        console.log(today);
         const screeningList = await CinemaScreening.findAll({
             where:{
                 CinemaHallHallID: hallID,
