@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { start } from 'repl';
 import database from "../../database/database";
 const { CinemaScreening } = database.models;
 
