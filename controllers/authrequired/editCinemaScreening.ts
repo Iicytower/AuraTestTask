@@ -52,6 +52,7 @@ const editCinemaScreening = async (req: Request, res: Response) => {
         if (isExistDuration) newScreeningData.duration = duration;
         if (isExistFilmTitle) newScreeningData.filmTitle = filmTitle;
 
+        console.log(newScreeningData);
         await CinemaScreening.update(newScreeningData, {
             where: {
                 cinemaScreeningID: id,
