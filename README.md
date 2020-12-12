@@ -81,7 +81,7 @@ This application is for a cinema manager to manage cinema halls and cinema scree
   }
   ```
 10. **GET** /authrequired/listCinemaScreening
-    - It receives in request a JSON object with ID of the hall we want to see, for example
+    - It receives in request a JSON object with hall ID whose screening schedule we want to download, for example
   ```JSON
   {
     "hallID": "731b426c-bd7c-4a15-8e9f-52cb8a321c32"
@@ -90,7 +90,7 @@ This application is for a cinema manager to manage cinema halls and cinema scree
 
 ## Start the application
 
- For begining run in your terminal:
+ To begin, run in your terminal:
     ``` git clone https://github.com/Iicytower/AuraTestTask.git```
     ``` cd AuraTestTask```
-  Now you have application code on your device. For start this application you need installed docker and docker-compose. Just run ```docker-compose up``` in application root folder.
+  Now you have application code on your device. To start this application you must have docker and docker-compose installed on your device. To start the application just run ```docker-compose up``` in application root folder.
