@@ -91,6 +91,6 @@ This application is for a cinema manager to manage cinema halls and cinema scree
 ## Start the application
 
  To begin, run in your terminal:
-    ``` git clone https://github.com/Iicytower/AuraTestTask.git```
+    ``` git clone https://github.com/Iicytower/AuraTestTask.git``` then 
     ``` cd AuraTestTask```
   Now you have application code on your device. To start this application you must have docker and docker-compose installed on your device. To start the application just run ```docker-compose up``` in application root folder.
