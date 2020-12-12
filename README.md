@@ -2,7 +2,7 @@
 
 ## Endpoints
 
-This application is for a cinema manager to manage cinema halls and cinema screenings. It has ten endpoints
+This application is for a cinema manager to manage cinema halls and cinema screenings. It has ten endpoints.
 1. **POST** /register
     - It resives in request a JSON object with e-mail and password, for example:
   ```JSON
