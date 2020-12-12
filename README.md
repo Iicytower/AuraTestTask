@@ -1,5 +1,7 @@
 # AuraTestTask
 
+## Endpoints
+
 This application is for a cinema manager to manage cinema halls and cinema screenings. It has ten endpoints
 1. **POST** /register
     - It resives in request a JSON object with e-mail and password, for example:
@@ -86,4 +88,7 @@ This application is for a cinema manager to manage cinema halls and cinema scree
   }
   ```
 
+##Start the application
+    For start this application you need installed docker and docker-compose. Just run ```docker-compose up``` in application root folder.
+    
 
