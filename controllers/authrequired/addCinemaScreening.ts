@@ -62,7 +62,7 @@ export default async (req: Request, res: Response) => {
                 startTime: newStart,
                 duration,
                 filmTitle,
-                // CinemaHallHallID: hallID, //TODO normal assossiations, manually adding is bad practice
+                CinemaHallHallID: hallID, //TODO normal assossiations, manually adding is bad practice
             });
 
             return res.status(201).json({

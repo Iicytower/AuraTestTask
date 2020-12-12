@@ -36,8 +36,11 @@ export default async (req: Request, res: Response) => {
             }
         });
 
-        return res.status(204).end();
-
+        return res.status(202).json({
+            status: "success",
+            msg: "resource was marked for deletion",
+        });
+        
     } catch (err) {
         console.error(err);
         return res.status(500).json({

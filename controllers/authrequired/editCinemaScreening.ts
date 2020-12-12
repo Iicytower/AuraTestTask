@@ -38,7 +38,7 @@ export default async (req: Request, res: Response) => {
             if (today > newStart) {
                 return res.status(400).json({
                     status: "failure",
-                    msg: "You can't edit the screening that already took place.",
+                    msg: "You can't set a past date",
                 });
             }
             newScreeningData.startTime = newStart;
@@ -46,7 +46,6 @@ export default async (req: Request, res: Response) => {
         if (isExistDuration) newScreeningData.duration = duration;
         if (isExistFilmTitle) newScreeningData.filmTitle = filmTitle;
 
-        console.log(newScreeningData);
         await CinemaScreening.update(newScreeningData, {
             where: {
                 cinemaScreeningID: id,
