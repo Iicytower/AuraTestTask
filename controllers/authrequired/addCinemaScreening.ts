@@ -3,7 +3,7 @@ import database from "../../database/database";
 const { CinemaScreening, CinemaHalls } = database.models;
 
 import allScreeningInHall from '../../helpers/allScreeningInHall'
-import { Screening } from '../../helpers/types';
+import { ScreeningDb } from '../../helpers/types';
 import isOccupied from '../../helpers/isThereAPlace';
 import isHallExist from '../../helpers/isHallExist';
 
@@ -22,46 +22,39 @@ export default async (req: Request, res: Response) => {
             })
         }
 
+        if (!await isHallExist(hallID)) {
+            return res.status(404).json({
+                status: `failure`,
+                msg: `Hall with id ${hallID} does not exist in database`,
+            });
+        }
+
         let isThereAPlace: boolean = true;
-        if (!!await isHallExist(hallID)) {
-            const screeningList = await allScreeningInHall(hallID);
-            
-            const data: Screening[] = [];
-            for (let i = 0; i < screeningList.length; i++) {
-                const el = screeningList[i];
 
-                const screeningData: Screening = {
-                    filmTitle: el.getDataValue('filmTitle'),
-                    startTime: el.getDataValue('startTime'),
-                    duration: el.getDataValue('duration'),
-                }
-                data.push(screeningData);
-            }
+        const data: ScreeningDb[] = await allScreeningInHall(hallID);
 
-            for (let i = 0; i < data.length; i++) {
-                const el = data[i];
+        for (let i = 0; i < data.length; i++) {
+            const el = data[i];
 
-                if ((el.startTime === undefined) || (el.duration === undefined)) {
-                    return res.status(500).json({
-                        status: `failure`,
-                        msg: "Somthing goes wrong with data from database",
-                    });
-                }
-
-                const curStart: number = parseInt(el.startTime);
-                const curEnd: number = curStart + (el.duration * 60 * 1000);
-                const newEnd: number = newStart + (duration * 60 * 1000);
-
-                if (!await isOccupied(curStart, curEnd, newStart, newEnd)) isThereAPlace = false
-            }
-
-            if (!isThereAPlace) {
-                return res.status(200).json({
+            if ((el.startTime === undefined) || (el.duration === undefined)) {
+                return res.status(500).json({
                     status: `failure`,
-                    msg: "The room is occupied during the given hours",
+                    msg: "Somthing goes wrong with data from database",
                 });
             }
 
+            const curStart: number = el.startTime;
+            const curEnd: number = curStart + (el.duration * 60 * 1000);
+            const newEnd: number = newStart + (duration * 60 * 1000);
+
+            if (!await isOccupied(curStart, curEnd, newStart, newEnd)) isThereAPlace = false
+        }
+
+        if (!isThereAPlace) {
+            return res.status(200).json({
+                status: `failure`,
+                msg: "The room is occupied during the given hours",
+            });
         }
 
         if (isThereAPlace) {

@@ -13,6 +13,7 @@ export default async (hallID: string) => {
      
  } catch (err) {
     console.error(err);
+    return err
  }
 
     return !!isExist;

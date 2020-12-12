@@ -3,7 +3,7 @@ import database from "../../database/database";
 const { CinemaScreening, CinemaHalls } = database.models;
 import allScreeningInHall from '../../helpers/allScreeningInHall'
 import isHallExist from '../../helpers/isHallExist';
-import { Screening } from '../../helpers/types'
+import { ScreeningDb } from '../../helpers/types'
 
 export default async (req: Request, res: Response) => {
 
@@ -17,24 +17,12 @@ export default async (req: Request, res: Response) => {
             });
         }
 
-        const screeningList = await allScreeningInHall(hallID);
-
-        const data: Screening[] = [];
-        for (let i = 0; i < screeningList.length; i++) {
-            const el = screeningList[i];
-
-            const screeningData: Screening = {
-                screeningID: el.getDataValue('cinemaScreeningID'),
-                filmTitle: el.getDataValue('filmTitle'),
-                startTime: String(new Date(el.getDataValue('startTime'))),
-                duration: el.getDataValue('duration'),
-            }
-            data.push(screeningData);
-        }
+        const data: ScreeningDb[] = await allScreeningInHall(hallID);
+        
 
         return res.status(200).json({
             status: 'success',
-            msg: `cinema screening list in ${hallID} hall`,
+            msg: `Cinema screening list in ${hallID} hall`,
             screeningList: data,
         })
 

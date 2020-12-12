@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import database from "../../database/database";
 const { CinemaHalls, CinemaScreening } = database.models;
 import isHallExist from '../../helpers/isHallExist';
+import allScreeningInHall from '../../helpers/allScreeningInHall';
 
 export default async (req: Request, res: Response) => {
 
@@ -15,25 +16,14 @@ export default async (req: Request, res: Response) => {
                 msg: `Hall with ID ${hallID} does not exist.`
             })
         }
-
-
         const today: number = Date.parse(String(new Date()));
-        const oneDay = 24 * 60 * 60 * 1000;
 
-        const screenings = await CinemaScreening.findAll({
-            where: {
-                CinemaHallHallID: hallID,
-                startTime: { [Op.gt]: today - oneDay }
-            }
-        });
+        const screenings = await allScreeningInHall(hallID, Date.parse(String(new Date())) - (4 * 60 * 60 * 1000));
 
         for (let i = 0; i < screenings.length; i++) {
             const el = screenings[i];
 
-            const startTime = el.getDataValue('startTime');
-            const duration = el.getDataValue('duration') * 60 * 1000;
-
-            if (startTime + duration > today) {
+            if (el.startTime + el.duration > today) {
                 return res.status(400).json({
                     status: `failure`,
                     msg: "You can't delete this hall, because there is a screening in progress or is planned in the future."

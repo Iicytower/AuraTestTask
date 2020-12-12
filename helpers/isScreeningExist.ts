@@ -14,6 +14,7 @@ export default async (screeningID: string) => {
      return !!isExist;
  } catch (err) {
     console.error(err);
+    return err
  }
 
 }
