@@ -5,16 +5,12 @@ import allScreeningInHall from '../../helpers/allScreeningInHall'
 import isHallExist from '../../helpers/isHallExist';
 import { Screening } from '../../helpers/types'
 
-const listCinemaScreening = async (req: Request, res: Response) => {
+export default async (req: Request, res: Response) => {
 
     const { hallID } = req.body;
 
     try {
-
-
-        const isExist = await isHallExist(hallID);
-
-        if (!isExist) {
+        if (!await isHallExist(hallID)) {
             return res.status(404).json({
                 status: `failure`,
                 msg: `Hall with id ${hallID} is not exist in database.`,
@@ -50,5 +46,3 @@ const listCinemaScreening = async (req: Request, res: Response) => {
         });
     }
 }
-
-export default listCinemaScreening;

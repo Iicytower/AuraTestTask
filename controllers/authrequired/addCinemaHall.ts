@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import database from "../../database/database";
 const { CinemaHalls } = database.models;
 
-const addCinemaHall = async (req: Request, res: Response) => {
-
-
+export default async (req: Request, res: Response) => {
     try {
         const {capacity, name} = req.body
 
@@ -35,5 +33,3 @@ const addCinemaHall = async (req: Request, res: Response) => {
         });
     }
 }
-
-export default addCinemaHall;

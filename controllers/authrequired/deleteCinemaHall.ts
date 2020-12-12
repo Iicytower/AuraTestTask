@@ -4,14 +4,12 @@ import database from "../../database/database";
 const { CinemaHalls, CinemaScreening } = database.models;
 import isHallExist from '../../helpers/isHallExist';
 
-const deleteCinemaHall = async (req: Request, res: Response) => {
-    //1607695747000
-    const { hallID } = req.body;
+export default async (req: Request, res: Response) => {
 
+    const { hallID } = req.body;
     try {
 
-        const isExist = await isHallExist(hallID);
-        if (!isExist) {
+        if (!await isHallExist(hallID)) {
             return res.status(404).json({
                 status: `failure`,
                 msg: `Hall with ID ${hallID} does not exist.`
@@ -57,10 +55,4 @@ const deleteCinemaHall = async (req: Request, res: Response) => {
             msg: "somthing goes wrong with delete cinema hall"
         });
     }
-
-
-    res.end('deleteCinemaHall');
-
 }
-
-export default deleteCinemaHall;

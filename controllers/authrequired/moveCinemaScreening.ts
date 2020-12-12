@@ -5,7 +5,7 @@ const { CinemaScreening } = database.models;
 import isHallExistReq from '../../helpers/isHallExist';
 import isScreeningExistReq from '../../helpers/isScreeningExist';
 
-const moveCinemaScreening = async (req: Request, res: Response) => {
+export default async (req: Request, res: Response) => {
 
     const { newHallID, screeningID } = req.body;
 
@@ -44,14 +44,4 @@ const moveCinemaScreening = async (req: Request, res: Response) => {
             msg: "somthing goes wrong with move cinema screening"
         });
     }
-
-
-
-
-
-
-    return res.end('moveCinemaScreening');
-
 }
-
-export default moveCinemaScreening;

@@ -3,9 +3,10 @@ import database from "../../database/database";
 const { CinemaScreening } = database.models;
 
 import { ScreeningDb } from '../../helpers/types';
+import isScreeningExist from '../../helpers/isScreeningExist';
 
 
-const editCinemaScreening = async (req: Request, res: Response) => {
+export default async (req: Request, res: Response) => {
 
     try {
         const { id, startTime, duration, filmTitle } = req.body
@@ -21,14 +22,7 @@ const editCinemaScreening = async (req: Request, res: Response) => {
             });
         }
 
-
-
-        const isExist = await CinemaScreening.findOne({
-            where: {
-                cinemaScreeningID: id,
-            }
-        });
-        if (!isExist) {
+        if (!await isScreeningExist(id)) {
             return res.status(404).json({
                 status: "failure",
                 msg: `Screening with id ${id} does not exist.`
@@ -67,8 +61,4 @@ const editCinemaScreening = async (req: Request, res: Response) => {
             msg: "somthing goes wrong with edit cinema screening",
         });
     }
-
-
 }
-
-export default editCinemaScreening;

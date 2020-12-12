@@ -5,8 +5,9 @@ const { CinemaScreening, CinemaHalls } = database.models;
 import allScreeningInHall from '../../helpers/allScreeningInHall'
 import { Screening } from '../../helpers/types';
 import isOccupied from '../../helpers/isThereAPlace';
+import isHallExist from '../../helpers/isHallExist';
 
-const addCinemaScreening = async (req: Request, res: Response) => {
+export default async (req: Request, res: Response) => {
 
     try {
         const { hallID, startTime, duration, filmTitle } = req.body;
@@ -21,17 +22,11 @@ const addCinemaScreening = async (req: Request, res: Response) => {
             })
         }
 
-        const foundCinemaHall = await CinemaHalls.findOne({
-            where: {
-                hallID,
-            }
-        });
-
         let isThereAPlace: boolean = true;
-        if (!!foundCinemaHall) {
+        if (!!await isHallExist(hallID)) {
             const screeningList = await allScreeningInHall(hallID);
+            
             const data: Screening[] = [];
-
             for (let i = 0; i < screeningList.length; i++) {
                 const el = screeningList[i];
 
@@ -74,7 +69,7 @@ const addCinemaScreening = async (req: Request, res: Response) => {
                 startTime: newStart,
                 duration,
                 filmTitle,
-                CinemaHallHallID: hallID, //TODO normal assossiations, manually adding is bad practice
+                // CinemaHallHallID: hallID, //TODO normal assossiations, manually adding is bad practice
             });
 
             return res.status(201).json({
@@ -91,5 +86,3 @@ const addCinemaScreening = async (req: Request, res: Response) => {
         });
     }
 }
-
-export default addCinemaScreening;

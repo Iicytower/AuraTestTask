@@ -4,10 +4,9 @@ import database from "../../database/database";
 const { CinemaHalls } = database.models;
 import isHallExist from '../../helpers/isHallExist';
 
-
 import { Hall } from '../../helpers/types';
 
-const editCinemaHall = async (req: Request, res: Response) => {
+export default async (req: Request, res: Response) => {
 
     try {
         const { id, name, capacity } = req.body;
@@ -22,9 +21,7 @@ const editCinemaHall = async (req: Request, res: Response) => {
             });
         }
 
-        const isExist = await isHallExist(id);
-
-        if (!isExist) {
+        if (!await isHallExist(id)) {
             return res.status(404).json({
                 status: "failure",
                 msg: `Hall with id ${id} does not exist.`
@@ -65,5 +62,3 @@ const editCinemaHall = async (req: Request, res: Response) => {
     }
 
 }
-
-export default editCinemaHall;

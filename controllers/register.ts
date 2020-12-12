@@ -3,7 +3,7 @@ import database from "../database/database";
 const { User } = database.models;
 import bcrypt from "bcryptjs";
 
-const register = async (req: Request, res: Response) => {
+export default async (req: Request, res: Response) => {
 
   const { email, password } = req.body;
 
@@ -33,13 +33,12 @@ const register = async (req: Request, res: Response) => {
 
     const salt: string = bcrypt.genSaltSync(10);
 
-    const user = {
+
+    await User.create({
       email,
       password: bcrypt.hashSync(password, salt),
       salt,
-    };
-
-    const addUser = await User.create(user);
+    });
 
     return res.status(201).json({
       status: `succes`,
@@ -54,5 +53,3 @@ const register = async (req: Request, res: Response) => {
     });
   }
 }
-
-export default register;

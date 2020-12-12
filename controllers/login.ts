@@ -7,7 +7,7 @@ import passport from "passport";
 import passportLocal from 'passport-local';
 const LocalStrategy = passportLocal.Strategy;
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
     if (!!req.user) {
         return res.status(400).json({
             status: 'failure',
@@ -82,6 +82,3 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     }
 
 }
-
-
-export default login;
