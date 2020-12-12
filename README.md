@@ -79,7 +79,7 @@ This application is for a cinema manager to manage cinema halls and cinema scree
   }
   ```
 10. **GET** /authrequired/listcinemaScreening
-  ..* It resives in request a JSON object with id of the hall we want to see, for example
+  ⋅⋅* It resives in request a JSON object with id of the hall we want to see, for example
   ```JSON
   {
     "hallID": "731b426c-bd7c-4a15-8e9f-52cb8a321c32"
