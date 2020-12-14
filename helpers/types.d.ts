@@ -1,18 +1,18 @@
-export type Screening = {
+export interface Screening {
     screeningID?: string,
     startTime?: string,
     duration?: number,
     filmTitle?: string,
-};
+}
 
-export type ScreeningDb = {
+export interface ScreeningDb {
     screeningID?: string,
     startTime?: number,
     duration?: number,
     filmTitle?: string,
-};
+}
 
-export type Hall = {
+export interface Hall {
     name?: string,
     capacity?: string,
 }
